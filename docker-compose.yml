@@ -1,0 +1,5 @@
+services:
+  iobroker:
+    extends:
+      file: smart-home-services.yml
+      service: iobroker
