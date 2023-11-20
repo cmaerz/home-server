@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   iobroker:
     container_name: iobroker
@@ -7,6 +9,38 @@ services:
     volumes:
       - iobrokerdata:/opt/iobroker
     ports:
-      - "8081:8081"
+      - "80:80"
+    networks:
+      - frontproxy_default
+      - default
+    environment:
+      - VIRTUAL_HOST=iobroker.sandharlanden.maerz
+      - LETSENCRYPT_HOST=iobroker.sandharlanden.maerz
+      - LETSENCRYPT_EMAIL=webmaster@sandharlanden.maerz
+
+  frontproxy:
+    restart: always
+    image: jwilder/nginx-proxy
+    labels:
+      - "com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - "/var/run/docker.sock:/tmp/docker.sock:ro"
+      - "certs-volume:/etc/nginx/certs:ro"
+      - "/etc/nginx/vhost.d"
+      - "/usr/share/nginx/html"
+  nginx-letsencrypt-companion:
+    restart: always
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    volumes:
+      - "certs-volume:/etc/nginx/certs"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
 volumes:
   iobrokerdata:
+  frontproxy:
+  certs-volume:
+networks:
+  frontproxy_default:
+    external: true
