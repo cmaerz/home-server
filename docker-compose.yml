@@ -41,6 +41,3 @@ volumes:
   iobrokerdata:
   frontproxy:
   certs-volume:
-networks:
-  frontproxy_default:
-    external: true
