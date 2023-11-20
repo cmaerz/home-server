@@ -1,4 +1,4 @@
-version: '3'
+version: '2'
 
 services:
   iobroker:
@@ -9,14 +9,13 @@ services:
     volumes:
       - iobrokerdata:/opt/iobroker
     ports:
-      - "80:80"
-    networks:
-      - frontproxy_default
-      - default
+      - "3000:80"
     environment:
       - VIRTUAL_HOST=iobroker.sandharlanden.maerz
+      - VIRTUAL_PORT=3000
       - LETSENCRYPT_HOST=iobroker.sandharlanden.maerz
       - LETSENCRYPT_EMAIL=webmaster@sandharlanden.maerz
+    network_mode: bridge
 
   frontproxy:
     restart: always
@@ -27,17 +26,29 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - "/var/run/docker.sock:/tmp/docker.sock:ro"
-      - "certs-volume:/etc/nginx/certs:ro"
-      - "/etc/nginx/vhost.d"
-      - "/usr/share/nginx/html"
-  nginx-letsencrypt-companion:
-    restart: always
-    image: jrcs/letsencrypt-nginx-proxy-companion
+      - conf:/etc/nginx/conf.d
+      - vhost:/etc/nginx/vhost.d
+      - html:/usr/share/nginx/html
+      - certs:/etc/nginx/certs:ro
+    network_mode: bridge
+
+  acme-companion:
+    image: nginxproxy/acme-companion
+    container_name: nginx-proxy-acme
+    environment:
+      - DEFAULT_EMAIL=mail@yourdomain.tld
+    volumes_from:
+      - nginx-proxy
     volumes:
-      - "certs-volume:/etc/nginx/certs"
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - certs:/etc/nginx/certs:rw
+      - acme:/etc/acme.sh
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    network_mode: bridge
+
 volumes:
   iobrokerdata:
-  frontproxy:
-  certs-volume:
+  conf:
+  vhost:
+  html:
+  certs:
+  acme:
