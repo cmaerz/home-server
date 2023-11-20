@@ -17,7 +17,7 @@ services:
       - LETSENCRYPT_EMAIL=webmaster@sandharlanden.maerz
     network_mode: bridge
 
-  frontproxy:
+  nginx-proxy:
     restart: always
     image: jwilder/nginx-proxy
     labels:
