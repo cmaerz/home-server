@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dnsmasq-config
+  namespace: homelab
+  labels:
+    app: dnsmasq
+data:
+  dnsmasq.conf: |
+    # Upstream DNS
+    server=1.1.1.1
+    server=8.8.8.8
+
+    # Local domain
+    local=/sandharlanden.maerz/
+    domain=sandharlanden.maerz
+
+    # Don't read /etc/resolv.conf
+    no-resolv
+
+    # Log queries (optional, disable for production)
+    log-queries
+
+    # Cache
+    cache-size=1000
+
+  hosts: |
+    192.168.1.2 emby.sandharlanden.maerz
+    192.168.1.2 jdownloader.sandharlanden.maerz
+    192.168.1.2 sandharlanden.maerz

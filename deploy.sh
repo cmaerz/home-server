@@ -15,9 +15,8 @@ kubectl apply -f k3s/namespace.yaml
 # Storage
 kubectl apply -f k3s/storage/
 
-# DNS stack (order matters)
-kubectl apply -f k3s/coredns/
-kubectl apply -f k3s/pihole/
+# DNS
+kubectl apply -f k3s/dns/
 
 # Apps
 kubectl apply -f k3s/emby/

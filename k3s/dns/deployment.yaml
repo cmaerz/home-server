@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dnsmasq
+  namespace: homelab
+  labels:
+    app: dnsmasq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dnsmasq
+  template:
+    metadata:
+      labels:
+        app: dnsmasq
+    spec:
+      containers:
+        - name: dnsmasq
+          image: andyshinn/dnsmasq:latest
+          args:
+            - --keep-in-foreground
+            - --conf-file=/etc/dnsmasq.d/dnsmasq.conf
+            - --addn-hosts=/etc/dnsmasq.d/hosts
+          ports:
+            - name: dns-udp
+              containerPort: 53
+              protocol: UDP
+            - name: dns-tcp
+              containerPort: 53
+              protocol: TCP
+          volumeMounts:
+            - name: config
+              mountPath: /etc/dnsmasq.d
+          resources:
+            requests:
+              cpu: 50m
+              memory: 32Mi
+            limits:
+              cpu: 100m
+              memory: 64Mi
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+      volumes:
+        - name: config
+          configMap:
+            name: dnsmasq-config
