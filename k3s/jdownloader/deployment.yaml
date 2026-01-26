@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: jdownloader
-          image: jlesage/jdownloader-2:v24.12.1
+          image: jlesage/jdownloader-2:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
         - name: emby
-          image: emby/embyserver:4.8.10.0
+          image: emby/embyserver:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

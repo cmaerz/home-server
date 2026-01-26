@@ -4,6 +4,9 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
+echo "Pulling latest changes..."
+git pull
+
 echo "Deploying homelab to k3s..."
 
 # Namespace first
