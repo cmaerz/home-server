@@ -23,10 +23,10 @@ data:
         }
     }
 
-    # All other queries go to PiHole for ad-blocking
+    # All other queries go to upstream DNS
     .:53 {
         log
         errors
-        forward . pihole-dns.homelab.svc.cluster.local:53
+        forward . 1.1.1.1 8.8.8.8
         cache 30
     }

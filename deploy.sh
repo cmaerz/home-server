@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
 echo "Pulling latest changes..."
-git pull
+git pull || echo "Warning: git pull failed (no network?), continuing with local files..."
 
 echo "Deploying homelab to k3s..."
 
