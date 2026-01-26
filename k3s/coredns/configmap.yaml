@@ -6,27 +6,20 @@ metadata:
   labels:
     app: coredns
 data:
-  # Update NODE_IP to your k3s node's IP address
-  NODE_IP: "192.168.1.2"
-
   Corefile: |
-    # Internal domain - returns node IP for all services
-    sandharlanden.maerz:53 {
-        log
-        errors
-        template IN A {
-            answer "{{ .Name }} 60 IN A {$NODE_IP}"
-            fallthrough
-        }
-        template IN AAAA {
-            rcode NOERROR
-        }
-    }
-
-    # All other queries go to upstream DNS
     .:53 {
         log
         errors
+        hosts /etc/coredns/hosts {
+            fallthrough
+        }
         forward . 1.1.1.1 8.8.8.8
         cache 30
     }
+
+  # Add your internal hostnames here
+  hosts: |
+    192.168.1.2 emby.sandharlanden.maerz
+    192.168.1.2 pihole.sandharlanden.maerz
+    192.168.1.2 jdownloader.sandharlanden.maerz
+    192.168.1.2 sandharlanden.maerz

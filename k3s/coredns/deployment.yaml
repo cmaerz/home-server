@@ -32,12 +32,6 @@ spec:
             - name: dns-udp
               containerPort: 53
               protocol: UDP
-          env:
-            - name: NODE_IP
-              valueFrom:
-                configMapKeyRef:
-                  name: coredns-custom
-                  key: NODE_IP
           volumeMounts:
             - name: config
               mountPath: /etc/coredns
@@ -74,3 +68,5 @@ spec:
             items:
               - key: Corefile
                 path: Corefile
+              - key: hosts
+                path: hosts
