@@ -8,6 +8,7 @@ metadata:
 data:
   Corefile: |
     .:53 {
+        any
         log
         errors
         hosts /etc/coredns/hosts {
