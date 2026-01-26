@@ -20,8 +20,6 @@ spec:
       labels:
         app: coredns
     spec:
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: coredns
           image: coredns/coredns:1.11.1

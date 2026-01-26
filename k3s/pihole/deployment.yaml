@@ -17,28 +17,20 @@ spec:
       labels:
         app: pihole
     spec:
-      # CoreDNS handles port 53, PiHole runs on 5353
-      hostNetwork: true
-      dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: pihole
           image: pihole/pihole:2024.07.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: dns-tcp
-              containerPort: 5353
+              containerPort: 53
               protocol: TCP
             - name: dns-udp
-              containerPort: 5353
+              containerPort: 53
               protocol: UDP
             - name: http
-              containerPort: 8080
+              containerPort: 80
               protocol: TCP
-          env:
-            - name: FTLCONF_dns_port
-              value: "5353"
-            - name: WEB_PORT
-              value: "8080"
           envFrom:
             - configMapRef:
                 name: pihole-config

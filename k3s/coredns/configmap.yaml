@@ -27,6 +27,6 @@ data:
     .:53 {
         log
         errors
-        forward . 127.0.0.1:5353
+        forward . pihole-dns.homelab.svc.cluster.local:53
         cache 30
     }

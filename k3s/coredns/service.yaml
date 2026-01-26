@@ -1,39 +1,26 @@
 ---
-# CoreDNS TCP Service
+# CoreDNS Service - LoadBalancer gets external IP from k3s servicelb
 apiVersion: v1
 kind: Service
 metadata:
-  name: coredns-tcp
+  name: coredns
   namespace: homelab
   labels:
     app: coredns
+  annotations:
+    # Force same IP for both TCP and UDP
+    metallb.universe.tf/allow-shared-ip: "coredns"
 spec:
   type: LoadBalancer
-  externalTrafficPolicy: Local
-  ports:
-    - name: dns-tcp
-      port: 53
-      targetPort: 53
-      protocol: TCP
-  selector:
-    app: coredns
-
----
-# CoreDNS UDP Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: coredns-udp
-  namespace: homelab
-  labels:
-    app: coredns
-spec:
-  type: LoadBalancer
-  externalTrafficPolicy: Local
+  loadBalancerIP: 192.168.1.2
   ports:
     - name: dns-udp
       port: 53
       targetPort: 53
       protocol: UDP
+    - name: dns-tcp
+      port: 53
+      targetPort: 53
+      protocol: TCP
   selector:
     app: coredns

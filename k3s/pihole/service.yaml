@@ -1,6 +1,5 @@
 ---
-# PiHole DNS on port 5353 (CoreDNS forwards here)
-# Using hostNetwork, so accessible at 127.0.0.1:5353 from CoreDNS
+# PiHole DNS (CoreDNS forwards here)
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,12 +11,12 @@ spec:
   type: ClusterIP
   ports:
     - name: dns-tcp
-      port: 5353
-      targetPort: 5353
+      port: 53
+      targetPort: 53
       protocol: TCP
     - name: dns-udp
-      port: 5353
-      targetPort: 5353
+      port: 53
+      targetPort: 53
       protocol: UDP
   selector:
     app: pihole
@@ -35,8 +34,8 @@ spec:
   type: NodePort
   ports:
     - name: http
-      port: 8080
-      targetPort: 8080
+      port: 80
+      targetPort: 80
       nodePort: 30080
       protocol: TCP
   selector:
