@@ -1,0 +1,98 @@
+---
+# Traefik IngressRoute for PiHole Web UI
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: pihole-ingress
+  namespace: homelab
+  labels:
+    app: pihole
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`pihole.sandharlanden.maerz`)
+      kind: Rule
+      services:
+        - name: pihole-web
+          port: 80
+
+---
+# Traefik IngressRoute for Emby
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: emby-ingress
+  namespace: homelab
+  labels:
+    app: emby
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`emby.sandharlanden.maerz`)
+      kind: Rule
+      services:
+        - name: emby
+          port: 8096
+
+---
+# Traefik IngressRoute for JDownloader
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: jdownloader-ingress
+  namespace: homelab
+  labels:
+    app: jdownloader
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`jdownloader.sandharlanden.maerz`)
+      kind: Rule
+      services:
+        - name: jdownloader
+          port: 5800
+
+---
+# Alternative: Standard Kubernetes Ingress (if not using Traefik CRDs)
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: homelab-ingress
+  namespace: homelab
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+spec:
+  rules:
+    - host: pihole.sandharlanden.maerz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pihole-web
+                port:
+                  number: 80
+    - host: emby.sandharlanden.maerz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: emby
+                port:
+                  number: 8096
+    - host: jdownloader.sandharlanden.maerz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jdownloader
+                port:
+                  number: 5800

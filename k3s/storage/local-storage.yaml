@@ -1,0 +1,79 @@
+---
+# PersistentVolume for Emby config
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: emby-config-pv
+  labels:
+    app: emby
+    type: config
+spec:
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/homelab/emby
+    type: DirectoryOrCreate
+
+---
+# PersistentVolume for JDownloader config
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jdownloader-config-pv
+  labels:
+    app: jdownloader
+    type: config
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/homelab/jdownloader
+    type: DirectoryOrCreate
+
+---
+# PersistentVolume for PiHole etc-pihole
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pihole-etc-pv
+  labels:
+    app: pihole
+    type: etc
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/homelab/pihole/etc
+    type: DirectoryOrCreate
+
+---
+# PersistentVolume for PiHole dnsmasq
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pihole-dnsmasq-pv
+  labels:
+    app: pihole
+    type: dnsmasq
+spec:
+  capacity:
+    storage: 500Mi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/homelab/pihole/dnsmasq
+    type: DirectoryOrCreate

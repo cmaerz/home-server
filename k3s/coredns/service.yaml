@@ -1,0 +1,39 @@
+---
+# CoreDNS TCP Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: coredns-tcp
+  namespace: homelab
+  labels:
+    app: coredns
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+    - name: dns-tcp
+      port: 53
+      targetPort: 53
+      protocol: TCP
+  selector:
+    app: coredns
+
+---
+# CoreDNS UDP Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: coredns-udp
+  namespace: homelab
+  labels:
+    app: coredns
+spec:
+  type: LoadBalancer
+  externalTrafficPolicy: Local
+  ports:
+    - name: dns-udp
+      port: 53
+      targetPort: 53
+      protocol: UDP
+  selector:
+    app: coredns
