@@ -4,4 +4,5 @@ metadata:
   name: homelab
   labels:
     app.kubernetes.io/name: homelab
-    app.kubernetes.io/description: Home server services
+  annotations:
+    description: "Home server services"
