@@ -117,3 +117,23 @@ spec:
   hostPath:
     path: /var/lib/homelab/radarr
     type: DirectoryOrCreate
+
+---
+# PersistentVolume for Heimdall config
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: heimdall-config-pv
+  labels:
+    app: heimdall
+    type: config
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/homelab/heimdall
+    type: DirectoryOrCreate

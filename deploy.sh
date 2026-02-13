@@ -23,6 +23,7 @@ kubectl apply -f k3s/emby/
 kubectl apply -f k3s/jdownloader/
 kubectl apply -f k3s/sonarr/
 kubectl apply -f k3s/radarr/
+kubectl apply -f k3s/dashboard/
 
 # Ingress
 kubectl apply -f k3s/ingress.yaml
