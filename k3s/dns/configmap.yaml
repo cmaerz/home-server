@@ -27,4 +27,6 @@ data:
   hosts: |
     192.168.1.2 emby.sandharlanden.maerz
     192.168.1.2 jdownloader.sandharlanden.maerz
+    192.168.1.2 sonarr.sandharlanden.maerz
+    192.168.1.2 radarr.sandharlanden.maerz
     192.168.1.2 sandharlanden.maerz

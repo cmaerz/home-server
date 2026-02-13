@@ -77,3 +77,43 @@ spec:
   hostPath:
     path: /var/lib/homelab/pihole/dnsmasq
     type: DirectoryOrCreate
+
+---
+# PersistentVolume for Sonarr config
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarr-config-pv
+  labels:
+    app: sonarr
+    type: config
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/homelab/sonarr
+    type: DirectoryOrCreate
+
+---
+# PersistentVolume for Radarr config
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: radarr-config-pv
+  labels:
+    app: radarr
+    type: config
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-path
+  hostPath:
+    path: /var/lib/homelab/radarr
+    type: DirectoryOrCreate

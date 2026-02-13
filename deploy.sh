@@ -21,6 +21,8 @@ kubectl apply -f k3s/dns/
 # Apps
 kubectl apply -f k3s/emby/
 kubectl apply -f k3s/jdownloader/
+kubectl apply -f k3s/sonarr/
+kubectl apply -f k3s/radarr/
 
 # Ingress
 kubectl apply -f k3s/ingress.yaml
