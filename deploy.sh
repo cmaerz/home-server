@@ -24,6 +24,7 @@ kubectl apply -f k3s/jdownloader/
 kubectl apply -f k3s/sonarr/
 kubectl apply -f k3s/radarr/
 kubectl apply -f k3s/dashboard/
+kubectl apply -f k3s/samba/
 
 # Ingress
 kubectl apply -f k3s/ingress.yaml

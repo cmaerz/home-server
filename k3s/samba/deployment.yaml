@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: samba
+  namespace: homelab
+  labels:
+    app: samba
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: samba
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: samba
+    spec:
+      containers:
+        - name: samba
+          image: dperson/samba:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: smb
+              containerPort: 445
+              protocol: TCP
+            - name: netbios
+              containerPort: 139
+              protocol: TCP
+          env:
+            - name: TZ
+              value: "Europe/Berlin"
+            - name: USERID
+              value: "1000"
+            - name: GROUPID
+              value: "1000"
+          command:
+            - /bin/sh
+            - -c
+            - |
+              # Create samba user with password from secret
+              addgroup -g 1000 nas 2>/dev/null
+              adduser -D -u 1000 -G nas nas 2>/dev/null
+              echo -e "${SAMBA_PASSWORD}\n${SAMBA_PASSWORD}" | smbpasswd -a -s nas
+              # Start samba with custom config
+              cp /etc/samba/custom/smb.conf /etc/samba/smb.conf
+              mkdir -p /var/log/samba
+              exec ionice -c 3 smbd --foreground --no-process-group --configfile=/etc/samba/smb.conf
+          envFrom:
+            - secretRef:
+                name: samba-credentials
+          volumeMounts:
+            - name: samba-config
+              mountPath: /etc/samba/custom
+            - name: media
+              mountPath: /data/media
+            - name: shared
+              mountPath: /data/shared
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 1000m
+              memory: 512Mi
+      volumes:
+        - name: samba-config
+          configMap:
+            name: samba-config
+        - name: media
+          hostPath:
+            path: /data/media
+            type: DirectoryOrCreate
+        - name: shared
+          hostPath:
+            path: /data/shared
+            type: DirectoryOrCreate
